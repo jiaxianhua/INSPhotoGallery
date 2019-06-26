@@ -46,6 +46,7 @@ extension CustomModelViewController: UICollectionViewDataSource, UICollectionVie
         let cell = collectionView.cellForItem(at: indexPath) as! ExampleCollectionViewCell
         let currentPhoto = photos[(indexPath as NSIndexPath).row]
         let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+        galleryPreview.shouldConfirmDeletion = true
 
         galleryPreview.referenceViewForPhotoWhenDismissingHandler = { [weak self] photo in
             if let index = self?.photos.firstIndex(where: {$0 === photo}) {
@@ -55,6 +56,26 @@ extension CustomModelViewController: UICollectionViewDataSource, UICollectionVie
             }
             return nil
         }
+        galleryPreview.deletePhotoHandler = { (photo) in
+            self.photos.removeAll(where: { $0.image == photo.image })
+            self.collectionView.reloadData()
+        }
+        
+        galleryPreview.savePhotoHandler = { (photo) in
+            if let image = photo.image {
+                UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+            }
+        }
         present(galleryPreview, animated: true, completion: nil)
     }
+    
+    @objc
+    func image(_ image: UIImage?, didFinishSavingWithError error: Error?, contextInfo: UnsafeMutableRawPointer?) {
+        if (error != nil) {
+            print(error.debugDescription)
+        } else {
+            print("Success")
+        }
+    }
+
 }

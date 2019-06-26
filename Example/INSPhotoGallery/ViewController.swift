@@ -58,6 +58,11 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         let cell = collectionView.cellForItem(at: indexPath) as! ExampleCollectionViewCell
         let currentPhoto = photos[(indexPath as NSIndexPath).row]
         let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+//        (_ photo: INSPhotoViewable) -> ()
+        galleryPreview.deletePhotoHandler = { (photo) in
+            self.photos.removeAll(where: { $0.image == photo.image })
+            self.collectionView.reloadData()
+        }
         if useCustomOverlay {
             galleryPreview.overlayView = CustomOverlayView(frame: CGRect.zero)
         }

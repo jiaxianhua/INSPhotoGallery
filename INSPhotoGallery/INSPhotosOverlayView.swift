@@ -153,6 +153,10 @@ open class INSPhotosOverlayView: UIView , INSPhotosOverlayViewable {
         photosViewController?.handleDeleteButtonTapped()
     }
     
+    @objc private func saveButtonTapped(_ sender: UIBarButtonItem) {
+        photosViewController?.handleSaveButtonTapped()
+    }
+    
     private func setupNavigationBar() {
         navigationBar = UINavigationBar()
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
@@ -195,10 +199,10 @@ open class INSPhotosOverlayView: UIView , INSPhotosOverlayViewable {
         captionLabel.numberOfLines = 0
         addSubview(captionLabel)
         
-        let bottomConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: captionLabel, attribute: .bottom, multiplier: 1.0, constant: 8.0)
+        let bottomConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: captionLabel, attribute: .bottom, multiplier: 1.0, constant: 44.0)
         let leadingConstraint = NSLayoutConstraint(item: captionLabel!, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 8.0)
-        let trailingConstraint = NSLayoutConstraint(item: captionLabel!, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 8.0)
-        self.addConstraints([bottomConstraint,leadingConstraint,trailingConstraint])
+        let widthConstraint = NSLayoutConstraint(item: captionLabel!, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0.0)
+        self.addConstraints([bottomConstraint,leadingConstraint, widthConstraint])
     }
     
     private func setupShadows() {
@@ -228,14 +232,16 @@ open class INSPhotosOverlayView: UIView , INSPhotosOverlayViewable {
         deleteToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
         deleteToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
         deleteToolbar.isTranslucent = true
-        let item = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(INSPhotosOverlayView.deleteButtonTapped(_:)))
-        deleteToolbar.setItems([item], animated: false)
+        let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(INSPhotosOverlayView.deleteButtonTapped(_:)))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let save = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(INSPhotosOverlayView.saveButtonTapped(_:)))
+        deleteToolbar.setItems([save, flexibleSpace, trash], animated: false)
         addSubview(deleteToolbar)
         
         let bottomConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: deleteToolbar, attribute: .bottom, multiplier: 1.0, constant: 0.0)
         let trailingConstraint = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: deleteToolbar, attribute: .trailing, multiplier: 1.0, constant: 0.0)
-        
-        let widthConstraint = NSLayoutConstraint(item: deleteToolbar!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 65)
+
+        let widthConstraint = NSLayoutConstraint(item: deleteToolbar!, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0.0)
         let heightConstraint = NSLayoutConstraint(item: deleteToolbar!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 50)
         self.addConstraints([bottomConstraint,trailingConstraint,widthConstraint, heightConstraint])
     }

@@ -47,6 +47,7 @@ class CustomPhotoModel: NSObject, INSPhotoViewable {
         if let url = imageURL {
             
             KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url), options: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, url) in
+                self.image = image
                 completion(image, error)
             })
         } else {
@@ -55,6 +56,7 @@ class CustomPhotoModel: NSObject, INSPhotoViewable {
     }
     func loadThumbnailImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
         if let thumbnailImage = thumbnailImage {
+            self.thumbnailImage = thumbnailImage
             completion(thumbnailImage, nil)
             return
         }

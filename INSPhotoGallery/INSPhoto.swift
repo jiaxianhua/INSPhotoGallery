@@ -71,6 +71,7 @@ import UIKit
     }
     @objc open func loadThumbnailImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
         if let thumbnailImage = thumbnailImage {
+            self.thumbnailImage = thumbnailImage
             completion(thumbnailImage, nil)
             return
         }
@@ -86,6 +87,7 @@ import UIKit
                     if error != nil {
                         completion(nil, error)
                     } else if let response = response, let image = UIImage(data: response) {
+                        self.image = image
                         completion(image, nil)
                     } else {
                         completion(nil, NSError(domain: "INSPhotoDomain", code: -1, userInfo: [ NSLocalizedDescriptionKey: "Couldn't load image"]))

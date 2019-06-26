@@ -17,6 +17,7 @@ class CustomPhotoModel: NSObject, INSPhotoViewable {
         return true
     }
     
+    var videoURL: URL?
     var imageURL: URL?
     var thumbnailImageURL: URL?
     
@@ -28,17 +29,20 @@ class CustomPhotoModel: NSObject, INSPhotoViewable {
         #endif
     }
     
-    init(image: UIImage?, thumbnailImage: UIImage?) {
+    init(image: UIImage?, thumbnailImage: UIImage?, videoURL: URL? = nil) {
+        self.videoURL = videoURL
         self.image = image
         self.thumbnailImage = thumbnailImage
     }
     
-    init(imageURL: URL?, thumbnailImageURL: URL?) {
+    init(imageURL: URL?, thumbnailImageURL: URL?, videoURL: URL? = nil) {
+        self.videoURL = videoURL
         self.imageURL = imageURL
         self.thumbnailImageURL = thumbnailImageURL
     }
     
-    init (imageURL: URL?, thumbnailImage: UIImage) {
+    init (imageURL: URL?, thumbnailImage: UIImage, videoURL: URL? = nil) {
+        self.videoURL = videoURL
         self.imageURL = imageURL
         self.thumbnailImage = thumbnailImage
     }

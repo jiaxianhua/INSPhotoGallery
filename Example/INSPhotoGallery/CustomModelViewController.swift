@@ -8,18 +8,15 @@
 
 import UIKit
 import INSPhotoGalleryFramework
+import AVKit
+import AVFoundation
 
 class CustomModelViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     lazy var photos: [CustomPhotoModel] = {
         return [
-            CustomPhotoModel(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/13-3f15416ddd11d38619289335fafd498d.jpg"), thumbnailImage: UIImage(named: "thumbnailImage")!),
-            CustomPhotoModel(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/13-3f15416ddd11d38619289335fafd498d.jpg"), thumbnailImage: UIImage(named: "thumbnailImage")!),
-            CustomPhotoModel(image: UIImage(named: "fullSizeImage")!, thumbnailImage: UIImage(named: "thumbnailImage")!),
-            CustomPhotoModel(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg") ),
-            CustomPhotoModel(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg") ),
-            CustomPhotoModel(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"))
+            CustomPhotoModel(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"), thumbnailImage: UIImage(named: "thumbnailImage")!, videoURL: URL(string: "https://v-cdn.zjol.com.cn/177836.mp4?userId=75adb2d6-37a8-4712-a9f1-4dd6f138edab"))
         ]
     }()
     
@@ -64,6 +61,17 @@ extension CustomModelViewController: UICollectionViewDataSource, UICollectionVie
         galleryPreview.savePhotoHandler = { (photo) in
             if let image = photo.image {
                 UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+            }
+        }
+        
+        galleryPreview.playPhotoHandler = { (photo) in
+            if let videoURL = photo.videoURL {
+                let player = AVPlayer(url: videoURL!)
+                let playerController = AVPlayerViewController()
+                playerController.player = player
+                self.present(playerController, animated: true) {
+                    player.play()
+                }
             }
         }
         present(galleryPreview, animated: true, completion: nil)

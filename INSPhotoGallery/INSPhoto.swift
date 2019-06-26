@@ -27,6 +27,7 @@ import UIKit
     var image: UIImage? { get }
     var thumbnailImage: UIImage? { get }
     @objc optional var isDeletable: Bool { get }
+    @objc optional var videoURL: URL? { get }
     
     func loadImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ())
     func loadThumbnailImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ())
@@ -38,6 +39,8 @@ import UIKit
     @objc open var image: UIImage?
     @objc open var thumbnailImage: UIImage?
     @objc open var isDeletable: Bool
+    
+    public var isVideo = false
     
     var imageURL: URL?
     var thumbnailImageURL: URL?

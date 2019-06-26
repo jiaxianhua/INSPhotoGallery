@@ -25,6 +25,7 @@ public typealias INSPhotosViewControllerDismissHandler = (_ viewController: INSP
 public typealias INSPhotosViewControllerLongPressHandler = (_ photo: INSPhotoViewable, _ gestureRecognizer: UILongPressGestureRecognizer) -> (Bool)
 public typealias INSPhotosViewControllerDeletePhotoHandler = (_ photo: INSPhotoViewable) -> ()
 public typealias INSPhotosViewControllerSavePhotoHandler = (_ photo: INSPhotoViewable) -> ()
+public typealias INSPhotosViewControllerPlayHandler = (_ photo: INSPhotoViewable) -> ()
 
 
 open class INSPhotosViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIViewControllerTransitioningDelegate {
@@ -60,6 +61,7 @@ open class INSPhotosViewController: UIViewController, UIPageViewControllerDataSo
     open var deletePhotoHandler: INSPhotosViewControllerDeletePhotoHandler?
     
     open var savePhotoHandler: INSPhotosViewControllerSavePhotoHandler?
+    open var playPhotoHandler: INSPhotosViewControllerPlayHandler?
     
     /*
      * The overlay view displayed over photos, can be changed but must implement INSPhotosOverlayViewable
@@ -254,6 +256,14 @@ open class INSPhotosViewController: UIViewController, UIPageViewControllerDataSo
     }
 
     // MARK: - Helper methods
+    private func playCurrentPhoto() {
+        guard let currentPhoto = self.currentPhoto else {
+            return
+        }
+        
+        self.playPhotoHandler?(currentPhoto)
+    }
+    
     private func saveCurrentPhoto() {
         guard let currentPhoto = self.currentPhoto else {
             return
@@ -346,6 +356,10 @@ open class INSPhotosViewController: UIViewController, UIPageViewControllerDataSo
     
     open func handleSaveButtonTapped() {
         saveCurrentPhoto()
+    }
+    
+    open func handlePlayButtonTapped() {
+        playCurrentPhoto()
     }
     
     // MARK: - View Controller Dismissal

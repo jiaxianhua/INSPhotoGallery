@@ -37,7 +37,6 @@ open class INSPhotosOverlayView: UIView , INSPhotosOverlayViewable {
     open private(set) var navigationBar: UINavigationBar!
     open private(set) var captionLabel: UILabel!
     open private(set) var toolbar: UIToolbar!
-    open private(set) var playButtonItem: UIBarButtonItem!
     
     open private(set) var navigationItem: UINavigationItem!
     open weak var photosViewController: INSPhotosViewController?
@@ -132,13 +131,6 @@ open class INSPhotosOverlayView: UIView , INSPhotosOverlayViewable {
             captionLabel.attributedText = photo.attributedTitle
         }
         self.toolbar.isHidden = photo.isDeletable != true
-        if (photo.videoURL) != nil {
-            self.playButtonItem.isEnabled = true
-            self.playButtonItem.tintColor = UIColor.white
-        } else {
-            self.playButtonItem.isEnabled = false
-            self.playButtonItem.tintColor = UIColor.clear
-        }
     }
     
     @objc private func closeButtonTapped(_ sender: UIBarButtonItem) {
@@ -245,10 +237,10 @@ open class INSPhotosOverlayView: UIView , INSPhotosOverlayViewable {
         toolbar.isTranslucent = true
         let trash = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(INSPhotosOverlayView.deleteButtonTapped(_:)))
         let leftFlexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        self.playButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(INSPhotosOverlayView.playButtonTapped(_:)))
-        let rightFlexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+//        self.playButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(INSPhotosOverlayView.playButtonTapped(_:)))
+//        let rightFlexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let save = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(INSPhotosOverlayView.saveButtonTapped(_:)))
-        toolbar.setItems([save, leftFlexibleSpace, self.playButtonItem, rightFlexibleSpace, trash], animated: false)
+        toolbar.setItems([save, leftFlexibleSpace, trash], animated: false)
         
         addSubview(toolbar)
         
